@@ -1,0 +1,245 @@
+.admin-task-container {
+  width: 94%;
+  height: 91.5%;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 24px;
+}
+/* addPages.css - Styles pour la création de pages */
+
+/* ===== ÉTATS DE CHARGEMENT ===== */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  min-height: 400px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== ALERTES ===== */
+.alert {
+  padding: 15px 20px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  border-left: 4px solid;
+  font-size: 15px;
+}
+
+.alert-error {
+  background-color: #fee;
+  border-color: #c53030;
+  color: #c53030;
+}
+
+.alert-warning {
+  background-color: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.alert-success {
+  background-color: #f0fff4;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.alert h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.alert p {
+  margin: 0;
+}
+
+.retry-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ===== CONTENEUR PRINCIPAL ===== */
+
+.admin-task-container h2 {
+  margin: 0 0 25px 0;
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ===== FORMULAIRE ===== */
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group textarea,
+.form-group select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group select {
+  cursor: pointer;
+  background-color: white;
+}
+
+/* ===== INPUT FILE ===== */
+input[type="file"] {
+  padding: 8px;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+/* ===== APERCU DES FICHIERS ===== */
+.file-preview {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+}
+
+.file-preview p {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.preview-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.file-tag {
+  background-color: #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* ===== BOUTON SUBMIT ===== */
+.submit-btn {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .admin-task-container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .admin-task-container h2 {
+    font-size: 20px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}
+
+/* ===== DEBUG INFO (optionnel, à retirer en prod) ===== */
+.debug-info {
+  background-color: #f3f4f6;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #374151;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}

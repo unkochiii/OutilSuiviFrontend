@@ -1,0 +1,68 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: #ffffff;
+
+  width: 98.8%;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Nom du projet */
+.header-project {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: #fff8e6;
+  border-radius: 6px;
+}
+
+.project-icon {
+  color: #f5a623;
+  font-size: 14px;
+}
+
+.project-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.dropdown-icon {
+  font-size: 10px;
+  color: #666;
+}
+
+/* Séparateur */
+.header-separator {
+  color: #e0e0e0;
+  font-size: 18px;
+}
+
+/* Due Date */
+.header-due-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.calendar-icon {
+  font-size: 16px;
+}
+
+.due-date-label {
+  color: #888;
+}
+
+.due-date-value {
+  font-weight: 600;
+  color: #333;
+}

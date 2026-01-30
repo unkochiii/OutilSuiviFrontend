@@ -1,0 +1,501 @@
+/* Container principal */
+.calendrier-page {
+  display: flex;
+  width: 94%;
+  height: 91.5%;
+  padding: 16px;
+  background-color: #fafafa;
+  border-radius: 24px;
+}
+
+.calendrier-container {
+  flex: 1;
+  padding: 24px;
+  margin-left: 0px;
+  overflow-x: auto;
+}
+
+/* Header */
+.calendrier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.breadcrumb-icon {
+  font-size: 18px;
+}
+
+.breadcrumb-icon.home {
+  color: #ff6b6b;
+}
+
+.breadcrumb-icon.calendar {
+  color: #9c27b0;
+}
+
+.breadcrumb-separator {
+  color: #ccc;
+}
+
+.breadcrumb-text {
+  font-weight: 500;
+  color: #333;
+}
+
+.month-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.month-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  margin-left: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.today-btn {
+  padding: 8px 16px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.today-btn:hover {
+  background: #ff5252;
+}
+
+.view-options {
+  display: flex;
+  gap: 4px;
+  background: #f5f5f5;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.view-btn {
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background: white;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.view-btn:hover:not(.active) {
+  background: #eee;
+}
+
+/* Grille du calendrier */
+.calendrier-grid {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+/* En-têtes des jours */
+.days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #eee;
+}
+
+.day-header {
+  padding: 16px;
+  text-align: center;
+  border-right: 1px solid #eee;
+  background: #fafafa;
+}
+
+.day-header:last-child {
+  border-right: none;
+}
+
+.day-header.today {
+  background: linear-gradient(to bottom, #fff5f5, #fafafa);
+}
+
+.day-header.today .day-name,
+.day-header.today .day-number {
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.day-name {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.day-number {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Corps du calendrier */
+.calendar-body {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 500px;
+}
+
+/* Vue DAILY */
+.calendrier-grid.daily .days-header {
+  display: none;
+}
+
+.calendrier-grid.daily .calendar-body {
+  display: block;
+  padding: 20px;
+}
+
+.day-column.daily-view {
+  border: none;
+  min-height: auto;
+  padding: 0;
+}
+
+.daily-date-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.daily-date-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+
+/* Vue WEEKLY (déjà existant, maintenu pour compatibilité) */
+.calendrier-grid.weekly .calendar-body {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* Vue MONTHLY */
+.calendrier-grid.monthly .days-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.calendrier-grid.monthly .calendar-body {
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(120px, 1fr);
+}
+
+.day-column {
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.day-column:nth-child(7n) {
+  border-right: none;
+}
+
+.day-column.today-column {
+  background: linear-gradient(to bottom, #fff5f5 0%, white 15%);
+}
+
+.day-column.today-column::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #ff6b6b;
+}
+
+/* Jours hors mois (monthly view) */
+.day-column.disabled {
+  opacity: 0.4;
+  background-color: #f9f9f9;
+}
+
+.day-column.disabled .day-number {
+  color: #999;
+}
+
+/* Container des tâches */
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+/* Carte de tâche */
+.task-card {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 0.95em;
+}
+
+.task-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.task-description {
+  font-size: 11px;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.task-status {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.task-status.status-to-do {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.task-status.status-in-progress {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.task-status.status-completed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Zone sans tâches */
+.no-tasks {
+  height: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 13px;
+}
+
+/* Vue mensuelle compacte */
+.calendrier-grid.monthly .task-card {
+  padding: 6px 8px;
+  margin: 2px 0;
+  font-size: 0.85em;
+}
+
+.calendrier-grid.monthly .task-content {
+  gap: 2px;
+}
+
+.calendrier-grid.monthly .task-title {
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+}
+
+.calendrier-grid.monthly .task-description {
+  display: none;
+}
+
+.calendrier-grid.monthly .task-meta {
+  margin-top: 2px;
+}
+
+.calendrier-grid.monthly .task-status {
+  font-size: 9px;
+  padding: 1px 6px;
+}
+
+/* Résumé */
+.tasks-summary {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.summary-text {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .calendrier-container {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .calendrier-grid {
+    overflow-x: auto;
+  }
+
+  .days-header,
+  .calendar-body {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendrier-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .month-title {
+    font-size: 20px;
+  }
+
+  .view-options {
+    flex-wrap: wrap;
+  }
+
+  .day-column {
+    min-height: 80px;
+    padding: 4px;
+  }
+
+  .calendrier-grid.monthly .calendar-body {
+    grid-auto-rows: minmax(80px, 1fr);
+  }
+
+  .task-card {
+    padding: 6px;
+  }
+
+  .task-title {
+    font-size: 12px;
+  }
+}
