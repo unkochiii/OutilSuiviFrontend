@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "node server.js",
-    "render-start": "node server.js"
+    "start": "node index.html",
+    "render-start": "node index.html"
   },
   "dependencies": {
     "axios": "^1.13.2",
