@@ -14,7 +14,7 @@ import Previsions from "./pages/Previsions/Previsions";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AddDocuments from "./pages/addDocuments/AddDocuments";
 import AddPage from "./pages/addPage/AddPages";
-import AddImages from "./pages/addImages/AddImages";
+import Document from "./pages/Document/Document";
 import AddProfile from "./pages/addProfile/AddProfile";
 import AddRepport from "./pages/addRepport/AddRepport";
 import AddTask from "./pages/addTask/AddTask";
@@ -134,14 +134,6 @@ function App() {
               }
             />
             <Route
-              path="/addImages"
-              element={
-                <ProtectedRoute>
-                  <AddImages />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/addProfile"
               element={
                 <ProtectedRoute>
@@ -189,14 +181,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/modifieImages"
-              element={
-                <ProtectedRoute>
-                  <ModifImages />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/modifieImages/:id" element={<ModifImages />} />
+            <Route path="/officials/:id" element={<Document />} />
             <Route
               path="/modifieProfile"
               element={

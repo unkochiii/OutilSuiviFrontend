@@ -168,7 +168,6 @@ const Home = () => {
             color="teal"
             todos={todos}
             onAddTask={() => navigate("/addToDo")}
-            isAdmin={isAdmin}
             isTodo={true}
           />
         </div>
