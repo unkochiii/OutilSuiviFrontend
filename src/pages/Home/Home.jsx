@@ -34,38 +34,48 @@ const Home = () => {
         }
 
         console.log(
-          "Chargement des données avec le token:",
+          `Chargement des données en tant que ${isAdmin ? "admin" : "utilisateur"}:`,
           token?.substring(0, 20) + "...",
         );
+
+        // Choisir les endpoints en fonction du rôle
+        const tasksEndpoint = isAdmin
+          ? `${apiBase}/admin/tasks`
+          : `${apiBase}/task/my/assigned`;
+
+        const todosEndpoint = isAdmin
+          ? `${apiBase}/admin/ToDo`
+          : `${apiBase}/ToDo/my-toDo`;
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
 
         // Charger les tâches
         let tasksData = [];
         try {
-          const tasksResponse = await axios.get(`${apiBase}/task/my/assigned`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          });
+          const tasksResponse = await axios.get(tasksEndpoint, { headers });
           console.log("Réponse tâches:", tasksResponse.data);
           tasksData = tasksResponse.data.data || [];
         } catch (taskErr) {
-          console.error("Erreur tâches:", taskErr.response?.data);
+          console.error(
+            "Erreur tâches:",
+            taskErr.response?.data || taskErr.message,
+          );
         }
 
         // Charger les todos
         let todosData = [];
         try {
-          const todosResponse = await axios.get(`${apiBase}/ToDo/my-toDo`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          });
+          const todosResponse = await axios.get(todosEndpoint, { headers });
           console.log("Réponse todos:", todosResponse.data);
           todosData = todosResponse.data.data || [];
         } catch (todoErr) {
-          console.error("Erreur todos:", todoErr.response?.data);
+          console.error(
+            "Erreur todos:",
+            todoErr.response?.data || todoErr.message,
+          );
         }
 
         setTasks(tasksData);
@@ -81,7 +91,7 @@ const Home = () => {
     if (user) {
       fetchData();
     }
-  }, [user, navigate]);
+  }, [user, navigate, isAdmin]);
 
   // Fonction pour calculer la progression depuis Progression[]
   const getProgress = (task) => {
@@ -100,6 +110,16 @@ const Home = () => {
   const reviewTasks = tasks.filter(
     (task) => !task.Done && getProgress(task) === 0,
   );
+
+  // Navigation vers le détail d'une tâche
+  const handleTaskClick = (taskId) => {
+    navigate(`/task/${taskId}`);
+  };
+
+  // Navigation vers le détail d'un todo (optionnel)
+  const handleTodoClick = (todoId) => {
+    navigate(`/todo/${todoId}`);
+  };
 
   if (loading) {
     return (
@@ -136,9 +156,11 @@ const Home = () => {
             title="Ready"
             count={readyTasks.length}
             color="green"
-            tasks={readyTasks}
+            items={readyTasks}
             onAddTask={() => navigate("/addTask")}
             isAdmin={isAdmin}
+            onItemClick={handleTaskClick}
+            itemType="task"
           />
 
           {/* Column In Progress */}
@@ -146,9 +168,11 @@ const Home = () => {
             title="In progress"
             count={inProgressTasks.length}
             color="orange"
-            tasks={inProgressTasks}
+            items={inProgressTasks}
             onAddTask={() => navigate("/addTask")}
             isAdmin={isAdmin}
+            onItemClick={handleTaskClick}
+            itemType="task"
           />
 
           {/* Column Review */}
@@ -156,9 +180,11 @@ const Home = () => {
             title="Review"
             count={reviewTasks.length}
             color="blue"
-            tasks={reviewTasks}
+            items={reviewTasks}
             onAddTask={() => navigate("/addTask")}
             isAdmin={isAdmin}
+            onItemClick={handleTaskClick}
+            itemType="task"
           />
 
           {/* Column To Do */}
@@ -166,9 +192,11 @@ const Home = () => {
             title="To Do"
             count={todos.length}
             color="teal"
-            todos={todos}
+            items={todos}
             onAddTask={() => navigate("/addToDo")}
-            isTodo={true}
+            isAdmin={isAdmin}
+            onItemClick={handleTodoClick}
+            itemType="todo"
           />
         </div>
       </main>
@@ -180,14 +208,12 @@ const KanbanColumn = ({
   title,
   count,
   color,
-  tasks = [],
-  todos = [],
+  items = [],
   onAddTask,
   isAdmin,
-  isTodo = false,
+  onItemClick,
+  itemType = "task",
 }) => {
-  const items = isTodo ? todos : tasks;
-
   return (
     <div className={`kanban-column kanban-column--${color}`}>
       <div className="kanban-column__header">
@@ -202,13 +228,19 @@ const KanbanColumn = ({
         )}
       </div>
       <div className="kanban-column__content">
-        {items.map((item) =>
-          isTodo ? (
-            <TodoCard key={item._id} todo={item} />
-          ) : (
-            <TaskCard key={item._id} task={item} />
-          ),
-        )}
+        {items.map((item) => (
+          <div
+            key={item._id}
+            className="kanban-card-wrapper"
+            onClick={() => onItemClick(item._id)}
+          >
+            {itemType === "task" ? (
+              <TaskCard task={item} />
+            ) : (
+              <TodoCard todo={item} />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -24,6 +24,10 @@ import ModifImages from "./pages/modifieImages/modifImages";
 import ModifProfile from "./pages/modifieProfile/modifProfile";
 import ModifTask from "./pages/modifieTask/modifTask";
 import ModifToDo from "./pages/modifieToDo/modifToDo";
+import Task from "./pages/Task/Task";
+import Todo from "./pages/ToDo/Todo";
+import Repports from "./pages/reports/Reports";
+import Report from "./pages/report/Report";
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -94,10 +98,34 @@ function App() {
               }
             />
             <Route
-              path="/documents"
+              path="/reports"
               element={
                 <ProtectedRoute>
-                  <Documents />
+                  <Repports />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/report/:id"
+              element={
+                <ProtectedRoute>
+                  <Report />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/task/:id"
+              element={
+                <ProtectedRoute>
+                  <Task />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/todo/:id"
+              element={
+                <ProtectedRoute>
+                  <Todo />
                 </ProtectedRoute>
               }
             />
@@ -174,7 +202,7 @@ function App() {
               }
             />
             <Route
-              path="/modifieDocuments"
+              path="/modifieDocuments/:id"
               element={
                 <ProtectedRoute>
                   <ModifDocuments />
@@ -184,7 +212,7 @@ function App() {
             <Route path="/modifieImages/:id" element={<ModifImages />} />
             <Route path="/officials/:id" element={<Document />} />
             <Route
-              path="/modifieProfile"
+              path="/modifieProfile/:id"
               element={
                 <ProtectedRoute>
                   <ModifProfile />
@@ -192,7 +220,7 @@ function App() {
               }
             />
             <Route
-              path="/modifieTask"
+              path="/modifieTask/:id"
               element={
                 <ProtectedRoute>
                   <ModifTask />
@@ -200,7 +228,7 @@ function App() {
               }
             />
             <Route
-              path="/modifieToDo"
+              path="/modifieToDo/:id"
               element={
                 <ProtectedRoute>
                   <ModifToDo />

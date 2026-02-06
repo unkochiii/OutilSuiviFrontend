@@ -1,10 +1,324 @@
-main {
+/* ============================================
+   VARIABLES GLOBALES
+   ============================================ */
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --danger-color: #dc2626;
+  --danger-hover: #b91d1d;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}
+
+/* ============================================
+   CONTENEUR PRINCIPAL
+   ============================================ */
+.todo-container {
   width: 94%;
   height: 91.5%;
-  padding: 16px;
+  padding: 24px;
   display: flex;
-  flex-direction: row;
-  gap: 16px;
+  flex-direction: column;
+  /* gap: 16px; */ /* ❌ Retiré - laisse la carte prendre toute la place */
   background-color: #f5f5f5;
   border-radius: 24px;
+  overflow: hidden; /* ❌ Changé de auto à hidden - scrollbar dans la carte */
+}
+
+/* ============================================
+   ÉTATS DE CHARGEMENT ET ERREUR
+   ============================================ */
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Prend toute la hauteur du container */
+  width: 100%;
+  text-align: center;
+}
+
+.loading-state {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+
+.loading-state::before {
+  content: "";
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-state {
+  color: var(--danger-color);
+}
+
+.error-state p {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.retry-button {
+  padding: 0.625rem 1.25rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  background: var(--primary-hover);
+}
+
+/* ============================================
+   CARTE PRINCIPALE - PREND TOUTE LA PLACE
+   ============================================ */
+.todo-detail-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+
+  /* ✅ Prend toute la taille du parent */
+  width: 100%;
+  height: 100%;
+
+  /* ✅ Structure en colonnes pour l'en-tête fixe et contenu scrollable */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   EN-TÊTE - FIXE EN HAUT
+   ============================================ */
+.todo-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-hover) 100%
+  );
+  color: white;
+  flex-shrink: 0; /* ❌ Ne pas rétrécir */
+}
+
+.todo-detail-header h1 {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Boutons d'action */
+.back-button,
+.edit-button,
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.back-button:hover,
+.edit-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.delete-button:hover {
+  background: var(--danger-color);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   CONTENU SCROLLABLE
+   ============================================ */
+.todo-detail-content {
+  flex: 1; /* ✅ Prend tout l'espace restant */
+  overflow-y: auto; /* ✅ Scrollbar ici si contenu trop long */
+}
+
+/* ============================================
+   GRILLE D'INFORMATIONS
+   ============================================ */
+.todo-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.info-item .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.info-item span:not(.label) {
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Badges */
+.status-badge,
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: fit-content;
+}
+
+/* Statuts */
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-resolved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* Priorités */
+.priority-urgent {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.priority-important {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.priority-secondaire {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+/* ============================================
+   SECTION DESCRIPTION
+   ============================================ */
+.description-section {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.description-section h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.description-content {
+  color: var(--text-secondary);
+  line-height: 1.75;
+  font-size: 0.9375rem;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ============================================
+   SECTION PERSONNES
+   ============================================ */
+.people-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  background: var(--bg-secondary);
+  min-height: fit-content; /* ✅ Évite que ça soit écrasé */
+}
+
+.person-card {
+  background: var(--bg-primary);
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.person-card h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem 0;
+}
+
+.person-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.person-email {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
 }

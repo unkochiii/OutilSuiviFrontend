@@ -39,19 +39,36 @@ const Documents = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const token = Cookies.get("userToken");
+        setLoading(true);
+        const token = Cookies.get("userToken") || localStorage.getItem("token");
+        const apiBase = "https://site--outilbackend--fp64tcf5fhqm.code.run";
 
-        const response = await axios.get(
-          "https://site--outilbackend--fp64tcf5fhqm.code.run/officials/my/assigned",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+        if (!token) {
+          console.log("Aucun token trouvé, redirection vers login");
+          navigate("/login");
+          return;
+        }
+
+        // Choisir l'endpoint en fonction du rôle
+        const endpoint = isAdmin
+          ? `${apiBase}/admin/officials`
+          : `${apiBase}/officials/my/assigned`;
+
+        console.log(
+          `Chargement des documents en tant que ${isAdmin ? "admin" : "utilisateur"}:`,
+          endpoint,
         );
 
+        const response = await axios.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.data.success) {
-          setDocuments(response.data.data);
+          // Pour l'endpoint admin, les données sont directement dans response.data.data
+          // Pour l'endpoint user, c'est aussi dans response.data.data
+          setDocuments(response.data.data || []);
         } else {
           setError("Erreur lors du chargement des documents");
         }
@@ -63,8 +80,10 @@ const Documents = () => {
       }
     };
 
-    fetchDocuments();
-  }, []);
+    if (user) {
+      fetchDocuments();
+    }
+  }, [user, isAdmin, navigate]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -336,7 +355,7 @@ const Documents = () => {
             </div>
           ) : documents.length === 0 ? (
             <div className="empty-state">
-              <p>Aucun document assigné</p>
+              <p>{isAdmin ? "Aucun document" : "Aucun document assigné"}</p>
             </div>
           ) : (
             <div className="documents-grid">

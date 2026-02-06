@@ -14,6 +14,7 @@ import images from "../../assets/Images.svg";
 import contrat from "../../assets/Contract.svg";
 import devis from "../../assets/Devis.svg";
 import cahier from "../../assets/Cahier.svg";
+import reportIcon from "../../assets/report.svg"; // ← Ajoutez cette icône
 import { useAuth } from "../../contexts/AuthContext";
 
 const Menu = () => {
@@ -39,7 +40,6 @@ const Menu = () => {
   // Charger les documents assignés
   useEffect(() => {
     const fetchAssignedOfficials = async () => {
-      // Ne charger que si le menu documents est ouvert et qu'on est connecté
       if (!openMenus.documents || !user) return;
 
       setLoading(true);
@@ -89,11 +89,9 @@ const Menu = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // ✅ LOGOUT CORRIGÉ
   const handleLogout = async () => {
     const token = Cookies.get("userToken");
 
-    // Essayer de notifier le serveur (optionnel)
     if (token) {
       try {
         await axios.post(
@@ -106,12 +104,10 @@ const Menu = () => {
           },
         );
       } catch (error) {
-        // Silencieux - on déconnecte quand même côté client
         console.log("Logout serveur:", error.message);
       }
     }
 
-    // ✅ Nettoyage complet côté client (TOUJOURS exécuté)
     Cookies.remove("userToken");
     Cookies.remove("user");
     localStorage.clear();
@@ -121,7 +117,6 @@ const Menu = () => {
     navigate("/login");
   };
 
-  // Fonction pour choisir l'icône appropriée selon le type de document
   const getIconForDocument = (official) => {
     const type = official.type?.toLowerCase() || "";
     if (type.includes("contrat")) return contrat;
@@ -130,10 +125,12 @@ const Menu = () => {
     return dossier;
   };
 
-  // Fonction pour formatter le titre du document
   const formatDocumentTitle = (official) => {
     return official.documentName || official.type || "Document";
   };
+
+  // Déterminer si admin
+  const isAdmin = user?.role === "admin";
 
   return (
     <div className="sidebar-container">
@@ -184,6 +181,27 @@ const Menu = () => {
                 <img src={calendrier} alt="calendrier" className="nav-icon" />
                 <span>Calendrier</span>
               </a>
+
+              {/* ============================================
+                  NOUVEAU : LIEN REPORT SELON LE RÔLE
+                  ============================================ */}
+              {isAdmin ? (
+                // Admin : voir tous les reports
+                <a href="/reports" className="nav-item admin-report-link">
+                  <img src={reportIcon} alt="reports" className="nav-icon" />
+                  <span>Tous les reports</span>
+                </a>
+              ) : (
+                // User : créer un report
+                <a href="/addRepport" className="nav-item user-report-link">
+                  <img
+                    src={reportIcon}
+                    alt="add report"
+                    className="nav-icon colored"
+                  />
+                  <span>Signaler un problème</span>
+                </a>
+              )}
             </nav>
 
             {/* Section Projet */}
@@ -266,8 +284,8 @@ const Menu = () => {
               </a>
             </div>
 
-            {/* Section Administration (visible uniquement par les admins) */}
-            {user?.role === "admin" && (
+            {/* Section Administration */}
+            {isAdmin && (
               <div className="admin-section">
                 <h3 className="section-title">Administration</h3>
                 <a href="/addProfile" className="nav-item admin-link">
