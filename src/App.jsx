@@ -154,6 +154,14 @@ function App() {
               }
             />
             <Route
+              path="/documents"
+              element={
+                <ProtectedRoute>
+                  <Documents />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/addDocuments"
               element={
                 <ProtectedRoute>
